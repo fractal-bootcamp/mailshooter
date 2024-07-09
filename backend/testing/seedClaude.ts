@@ -1,4 +1,9 @@
-import { PrismaClient } from '@testPrisma/client' // TODO create a test database with docker
+import { PrismaClient } from '@prisma/client' // TODO create a test database with docker
+import { config } from "dotenv"
+config({ path: '.' })
+
+console.log('DATABASE_URL:', process.env.DATABASE_URL); // Add this line for debugging
+
 
 const testPrisma = new PrismaClient()
 
@@ -6,6 +11,7 @@ export async function seedTestDatabase() {
     // Create AdminUsers
     const admin1 = await testPrisma.adminUser.create({
         data: {
+            id: '001a',
             email: 'admin1@example.com',
             name: 'Admin One',
             clerkId: 'clerk_345'
@@ -38,6 +44,7 @@ export async function seedTestDatabase() {
     // Create MailingLists
     const mailingList1 = await testPrisma.mailingList.create({
         data: {
+            id: '001a',
             name: 'Newsletter Subscribers',
         },
     })

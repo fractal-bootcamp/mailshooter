@@ -2,7 +2,7 @@ import { expect, test, describe, it } from "vitest";
 import { sum } from "../server";
 import request from 'supertest'
 import type { MailingList } from "@prisma/client";
-import { stringSchema, mailingListSchema } from "../prisma/schemas.zod"
+import { stringSchema, mailingListSchema } from "./schemas.zod"
 import { beforeEach } from "vitest";
 import { seedDatabase } from "./seed";
 import { seedTestDatabase } from "./seedClaude";
