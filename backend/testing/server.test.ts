@@ -1,5 +1,4 @@
 import { expect, test, describe, it } from "vitest";
-import { sum } from "../server";
 import request from 'supertest'
 import type { MailingList } from "@prisma/client";
 import { stringSchema, mailingListSchema } from "./schemas.zod"
