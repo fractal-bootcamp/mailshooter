@@ -50,10 +50,34 @@ describe('mailing list tests', () => {
         expect(body.length).toBeGreaterThan(0)
     })
 
-    it('should update a mailing list with additions, deletions, potential name change', async () => {
-        const res = await request(SERVER_URL).put('/list/:id')
-        const body = res.body
+    it('should update a mailing list with additions of personIds, deletions of personIds, potential name change', async () => {
+        // endpoint 001b begins with person 001a in it. 
+        // if i PUT that endpoint with addPersonIds = ['001b'] and delPersonIds = ['001a']
+        // and then i hit that same endpoint it should return a mailinglist with person 001b in it
 
+
+        const id = "001b"
+        const addPersonIds = ['001b']
+        const delPersonIds = ['001a']
+
+        const updateData = {
+            added: addPersonIds,
+            deleted: delPersonIds,
+            name: 'VIP Customers'
+        }
+
+        const putRes = await request(SERVER_URL)
+            .put(`/list/${id}`)
+            .send(updateData)
+
+        const getRes = await request(SERVER_URL).get(`/list/${id}`)
+
+        const body = getRes.body
+        const status = getRes.status
+
+        expect(status).toBe(200)
+        expect(body.personsInMailingLists[0].personId).toBe('001b')
+        expect(body.name).toBe('VIP Customers')
 
     })
 
