@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "main": "index.ts",
   "scripts": {
-    "start": "dotenv -e .env npx prisma migrate dev ",
-    "test": "dotenv -e test.env -- npx prisma migrate dev && dotenv -e test.env -- vitest"
+    "start": "dotenv -e .env.dev npx prisma migrate dev ",
+    "test": "dotenv -e .env.test -- npx prisma migrate dev && npx prisma generate && dotenv -e .env.test vitest",
+    "buntest": "bunx dotenv-cli -e .env.test -- bunx prisma migrate dev && bunx dotenv-cli -e .env.test -- vitest run"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +23,7 @@
   },
   "dependencies": {
     "@prisma/client": "5.16.1",
+    "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "dotenv-cli": "^7.4.2",
     "express": "^4.19.2",
