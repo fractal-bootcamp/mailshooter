@@ -4,8 +4,7 @@ import request from 'supertest'
 import type { MailingList } from "@prisma/client";
 import { stringSchema, mailingListSchema } from "./schemas.zod"
 import { beforeEach } from "vitest";
-import { seedDatabase } from "./seed";
-import { seedTestDatabase } from "./seedClaude";
+import { seedTestDatabase } from "./seed";
 
 // describe('database tests', () => {
 
@@ -36,12 +35,12 @@ describe('mailing list tests', () => {
         // expect body to be an array of MailingList objects
         // expect body to have at least one element
         expect(status).toBe(200)
-        expect(body).toBeInstanceOf(Array<MailingList>)
+        expect(() => mailingListSchema.safeParse(body[0]).success)
         expect(body.length).toBeGreaterThan(0)
     })
 
     it('should get a mailing list by id', async () => {
-        const id = "1a"
+        const id = "001a"
         const res = await request(SERVER_URL).get(`/list/${id}`)
         const body = res.body
         const status = res.status
