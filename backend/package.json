@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.ts",
   "scripts": {
-    "test": "vitest"
+    "test": "dotenv -e test.env -- npx prisma migrate dev && dotenv -e test.env -- vitest"
   },
   "keywords": [],
   "author": "",
@@ -12,13 +12,17 @@
   "devDependencies": {
     "@types/bun": "latest",
     "@types/node": "^20.14.10",
+    "@types/supertest": "^6.0.2",
+    "supertest": "^7.0.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.3",
     "vitest": "^2.0.1"
   },
   "dependencies": {
     "@prisma/client": "5.16.1",
+    "dotenv-cli": "^7.4.2",
     "express": "^4.19.2",
-    "prisma": "^5.16.1"
+    "prisma": "^5.16.1",
+    "zod": "^3.23.8"
   }
 }
