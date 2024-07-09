@@ -26,9 +26,10 @@ describe('mailing list tests', () => {
     })
 
     it('should get a list of all mailing lists', async () => {
-        const res = await request(SERVER_URL).get('/list/all')
-        const body = res.body
-        const status = res.status
+        const res = await request(SERVER_URL).get('/dashboard/list/all')
+        console.log(res)
+        const body = await res.body
+        const status = await res.status
 
         // expect status to be 200
         // expect body to be an array of MailingList objects
@@ -40,7 +41,7 @@ describe('mailing list tests', () => {
 
     it('should get a mailing list by id', async () => {
         const id = "001a"
-        const res = await request(SERVER_URL).get(`/list/${id}`)
+        const res = await request(SERVER_URL).get(`/dashboard/list/${id}`)
         const body = res.body
         const status = res.status
 
@@ -66,10 +67,10 @@ describe('mailing list tests', () => {
         }
 
         const putRes = await request(SERVER_URL)
-            .put(`/list/${id}`)
+            .put(`/dashboard/list/${id}`)
             .send(updateData)
 
-        const getRes = await request(SERVER_URL).get(`/list/${id}`)
+        const getRes = await request(SERVER_URL).get(`/dashboard/list/${id}`)
 
         const body = getRes.body
         const status = getRes.status
