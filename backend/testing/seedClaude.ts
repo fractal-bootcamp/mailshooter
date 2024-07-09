@@ -8,6 +8,21 @@ console.log('DATABASE_URL:', process.env.DATABASE_URL); // Add this line for deb
 const testPrisma = new PrismaClient()
 
 export async function seedTestDatabase() {
+
+    // Delete from tables with foreign key dependencies first
+    await testPrisma.message.deleteMany({});
+    await testPrisma.mailingListInBlast.deleteMany({});
+    await testPrisma.personsInMailingLists.deleteMany({});
+
+
+    // Then delete from the main tables
+    await testPrisma.blast.deleteMany({});
+    await testPrisma.mailingList.deleteMany({});
+    await testPrisma.adminUser.deleteMany({});
+    await testPrisma.person.deleteMany({});
+
+
+
     // Create AdminUsers
     const admin1 = await testPrisma.adminUser.create({
         data: {
@@ -108,5 +123,6 @@ export async function seedTestDatabase() {
     })
 
     console.log('Seed data created successfully!')
-}
 
+
+}
