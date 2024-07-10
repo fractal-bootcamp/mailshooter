@@ -1,41 +1,10 @@
 import { PrismaClient } from "@prisma/client"; // TODO create a test database with docker
+import seedData from "./seedData";
 
 console.log("DATABASE_URL:", process.env.DATABASE_URL); // Add this line for debugging
 
 const testPrisma = new PrismaClient();
 
-export const seedData = {
-  admin1: {
-    id: "001a",
-    email: "admin1@example.com",
-    name: "Admin One",
-    clerkId: "clerk_345",
-  },
-  admin2: {
-    id: `001b`,
-    email: "admin2@example.com",
-    name: "Admin Two",
-    clerkId: "clerk_123",
-  },
-  person1: {
-    id: "001a",
-    name: "John Doe",
-    email: "john@example.com",
-  },
-  person2: {
-    id: `001b`,
-    name: "Jane Smith",
-    email: "jane@example.com",
-  },
-  mailingList1: {
-    id: "001a",
-    name: "Newsletter Subscribers",
-  },
-  mailingList2: {
-    id: `001b`,
-    name: "VIP Customers",
-  },
-}
 
 export const blastData = {
   blast1: {

@@ -117,10 +117,17 @@ describe.skip("email blast tests", () => {
         body.forEach((blast: Blast) => {
             expect(BlastSchema.safeParse(blast).success).toBe(true);
         });
+        expect(body.length).toBeGreaterThan(0);
 
     })
 
     it("should pull an email blast by ID", async () => {
+        // hit endpoint /dashboard/blast/:id
+        // expect status to be 200
+        // hit with id = '001a'
+        // expect body.id to be id 
+        // expect body.blastName to be 
+
 
     })
 
