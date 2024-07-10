@@ -4,7 +4,12 @@ import prisma from "../../../prisma/client";
 const listRouter = express.Router();
 
 listRouter.get("/all", async (req, res) => {
-    const mailingLists = await prisma.mailingList.findMany();
+    const mailingLists = await prisma.mailingList.findMany({
+        include: {
+            recipients: true,
+            blasts: true
+        }
+    });
     res.status(200).json(mailingLists);
 });
 

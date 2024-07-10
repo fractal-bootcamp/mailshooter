@@ -9,7 +9,8 @@ generator client {
 }
 
 generator zod {
-  provider = "zod-prisma-types"
+  provider       = "zod-prisma-types"
+  addIncludeType = true
 }
 
 datasource db {
