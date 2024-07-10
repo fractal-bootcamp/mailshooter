@@ -1,21 +1,12 @@
 import { PrismaClient } from "@prisma/client"; // TODO create a test database with docker
-import seedData from "./seedData";
+import { blastData, listData } from "./seedData";
 
 console.log("DATABASE_URL:", process.env.DATABASE_URL); // Add this line for debugging
 
 const testPrisma = new PrismaClient();
 
 
-export const blastData = {
-  blast1: {
-    name: "Monthly Newsletter",
-    authorId: seedData.admin1.id,
-  },
-  blast2: {
-    name: "Special Promotion",
-    authorId: seedData.admin2.id,
-  },
-}
+
 
 
 export async function seedTestDatabase() {
@@ -36,29 +27,29 @@ export async function seedTestDatabase() {
 
   // Create AdminUsers
   const admin1 = await testPrisma.adminUser.create({
-    data: seedData.admin1
+    data: listData.admin1
   });
 
   const admin2 = await testPrisma.adminUser.create({
-    data: seedData.admin2
+    data: listData.admin2
   });
 
   // Create Persons
   const person1 = await testPrisma.person.create({
-    data: seedData.person1
+    data: listData.person1
   });
 
   const person2 = await testPrisma.person.create({
-    data: seedData.person2
+    data: listData.person2
   });
 
   // Create MailingLists
   const mailingList1 = await testPrisma.mailingList.create({
-    data: seedData.mailingList1
+    data: listData.mailingList1
   });
 
   const mailingList2 = await testPrisma.mailingList.create({
-    data: seedData.mailingList2
+    data: listData.mailingList2
   });
 
 

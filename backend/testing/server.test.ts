@@ -7,6 +7,7 @@ import app from "../server";
 import { z } from "zod";
 
 import { BlastSchema, MailingListSchema as MailingListSchemaStrictCuid, type Blast, type MailingList } from "../prisma/generated/zod/index";
+import { blastData } from "./seedData";
 
 const MailingListSchema = MailingListSchemaStrictCuid.extend({
     id: z.string(),
@@ -127,6 +128,15 @@ describe.skip("email blast tests", () => {
         // hit with id = '001a'
         // expect body.id to be id 
         // expect body.blastName to be 
+        const expectBlast = blastData.blast1;
+
+        const res = await request(app).get(`/dashboard/blast/${expectBlast.id}`);
+        const body = res.body;
+        const status = res.status;
+        expect(status).toBe(200);
+        expect(body.id).toBe(expectBlast.id);
+        expect(body.name).toBe(expectBlast.name);
+
 
 
     })

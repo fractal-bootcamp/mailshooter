@@ -1,5 +1,5 @@
 
-export const seedData = {
+export const listData = {
     admin1: {
         id: "001a",
         email: "admin1@example.com",
@@ -32,4 +32,15 @@ export const seedData = {
     },
 }
 
-export default seedData;
+export const blastData = {
+    blast1: {
+        id: "001a",
+        name: "Monthly Newsletter",
+        authorId: listData.admin1.id,
+    },
+    blast2: {
+        id: "001b",
+        name: "Special Promotion",
+        authorId: listData.admin2.id,
+    },
+}
