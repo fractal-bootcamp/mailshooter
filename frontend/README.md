@@ -2,10 +2,11 @@
 
 ## An application that allows you to create email blasts and send them to mailing lists.
 
-Built with: 
+Built with:
+
 - React
 - Vite
 - TypeScript
-- Supabase  
+- Supabase
 - Prisma
 - Tailwind

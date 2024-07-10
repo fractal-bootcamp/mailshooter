@@ -1,10 +1,10 @@
-import { SignOutButton } from "@clerk/clerk-react"
+import { SignOutButton } from "@clerk/clerk-react";
 
 export const Dashboard = () => {
-    return (
-        <div>
-            <h1>Dashboard</h1>
-            <SignOutButton />
-        </div>
-    )
-}   
+  return (
+    <div>
+      <h1>Dashboard</h1>
+      <SignOutButton />
+    </div>
+  );
+};
