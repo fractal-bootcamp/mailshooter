@@ -30,7 +30,7 @@ model Person {
   name  String
   email String @unique
 
-  PersonsInMailingLists PersonsInMailingLists[]
+  mailingLists PersonsInMailingLists[]
 
   receivedMessages Message[]
 
@@ -39,10 +39,10 @@ model Person {
 }
 
 model MailingList {
-  id                    String                  @id @default(cuid())
-  name                  String
-  PersonsInMailingLists PersonsInMailingLists[]
-  MailingListInBlast    MailingListInBlast[]
+  id         String                  @id @default(cuid())
+  name       String
+  recipients PersonsInMailingLists[]
+  blasts     MailingListInBlast[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

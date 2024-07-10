@@ -50,7 +50,7 @@ describe('mailing list tests', () => {
         expect(body.id).toBe(id)
     })
 
-    it.skip('should update a mailing list with additions of personIds, deletions of personIds, potential name change', async () => {
+    it('should update a mailing list with additions of personIds, deletions of personIds, potential name change', async () => {
         // endpoint 001b begins with person 001a in it. 
         // if i PUT that endpoint with addPersonIds = ['001b'] and delPersonIds = ['001a']
         // and then i hit that same endpoint it should return a mailinglist with person 001b in it
@@ -63,8 +63,10 @@ describe('mailing list tests', () => {
         const updateData = {
             added: addPersonIds,
             deleted: delPersonIds,
-            name: 'VIP Customers'
+            name: 'VIP People'
         }
+        const getBeforeRes = await request(app).get(`/dashboard/list/${id}`)
+        console.log(getBeforeRes.body)
 
         const putRes = await request(app)
             .put(`/dashboard/list/${id}`)
@@ -74,10 +76,10 @@ describe('mailing list tests', () => {
 
         const body = getRes.body
         const status = getRes.status
-        // console.log(body)
+        console.log(body)
 
         expect(status).toBe(200)
-        expect(body.personsInMailingLists[0].personId).toBe('001b')
+        expect(body.recipients[0].personId).toBe('001b')
         expect(body.name).toBe('VIP Customers')
 
     })
