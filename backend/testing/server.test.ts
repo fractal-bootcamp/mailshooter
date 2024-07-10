@@ -6,8 +6,8 @@ import { seedTestDatabase } from "./seed";
 import app from "../server";
 import { z } from "zod";
 
-import { BlastSchema, MailingListSchema as MailingListSchemaStrictCuid, type Blast, type MailingList } from "../prisma/generated/zod/index";
-import { blastData, messageData } from "./seedData";
+import { BlastSchema, MailingListSchema as MailingListSchemaStrictCuid, MessageSchema, type Blast, type MailingList } from "../prisma/generated/zod/index";
+import { blastData, listData, messageData } from "./seedData";
 
 const MailingListSchema = MailingListSchemaStrictCuid.extend({
     id: z.string(),
@@ -143,6 +143,43 @@ describe.skip("email blast tests", () => {
     })
 
     it("should create a new email blast", async () => {
+        // should hit endpoint /dashboard/blast/create
+        // it should create a new email blast 
+        // should supply content  
+        // and should supply email lists
+        // should supply name
+
+        // I want to catch the new blast id 
+        // then hit the GET endpoint with the new blast id
+
+        // expect status to be 200
+        // expect body to be of type Blast
+        // expect the body.messagesSent to be an array of messages with content matching the content in sendData.content
+        // expect the body.lists to be an array matching the lists in sendData.lists
+
+        const sendData = {
+            content: "This is the first blast of the season gang",
+            lists: [listData.mailingList1.id, listData.mailingList2.id],
+            name: "First of the Season"
+        }
+
+        const res = await request(app)
+            .post("/dashboard/blast/create")
+            .send(sendData);
+
+        const body = res.body;
+        const status = res.status;
+
+        expect(status).toBe(200);
+        expect(BlastSchema.safeParse(body).success).toBe(true);
+
+        const MessagesArraySchema = z.array(MessageSchema);
+        expect(MessagesArraySchema.safeParse(body.messagesSent).success).toBe(true);
+
+        const listsArraySchema = z.array(MailingListSchema);
+        expect(listsArraySchema.safeParse(body.lists).success).toBe(true);
+
+
 
     })
 })
