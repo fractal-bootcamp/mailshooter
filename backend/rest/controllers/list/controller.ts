@@ -5,7 +5,6 @@ const listRouter = express.Router();
 
 listRouter.get('/all', async (req, res) => {
     const mailingLists = await prisma.mailingList.findMany();
-    // console.log(mailingLists)
     res.status(200).json(mailingLists);
 });
 
@@ -42,7 +41,6 @@ listRouter.put('/:id', async (req, res) => {
         }
     });
 
-    console.log("gang", req.body)
 
     if (added && added.length > 0) {
         const createObject: createOrDeleteParams = []
@@ -54,8 +52,6 @@ listRouter.put('/:id', async (req, res) => {
 
         });
 
-        console.log('Create object: ', createObject)
-
         await prisma.personsInMailingLists.createMany({
             data: createObject
         })
@@ -63,16 +59,6 @@ listRouter.put('/:id', async (req, res) => {
     }
 
     if (deleted && deleted.length > 0) {
-        // const deleteObject: createOrDeleteParams = []
-        // deleted.forEach((personId: string) => {
-        //     deleteObject.push({
-        //         personId: personId,
-        //         mailingListId: req.params.id
-        //     })
-
-        // });
-
-        // console.log('Delete object: ', deleteObject)
 
         await prisma.personsInMailingLists.deleteMany({
             where: {
@@ -83,34 +69,6 @@ listRouter.put('/:id', async (req, res) => {
         })
 
     }
-
-    // // Add persons to the mailing list
-    // if (added && added.length > 0) {
-    //     await prisma.mailingList.update({
-    //         where: {
-    //             id: req.params.id,
-    //         },
-    //         data: {
-    //             recipients: {
-    //                 create: added.map((personId: string) => ({ id: personId })),
-    //             },
-    //         },
-    //     });
-    // }
-
-    // // Remove persons from the mailing list
-    // if (deleted && deleted.length > 0) {
-    //     await prisma.mailingList.update({
-    //         where: {
-    //             id: req.params.id,
-    //         },
-    //         data: {
-    //             recipients: {
-    //                 delete: deleted.map((personId: string) => ({ id: personId })),
-    //             },
-    //         },
-    //     });
-    // }
 
     res.status(200).json(mailingList);
 

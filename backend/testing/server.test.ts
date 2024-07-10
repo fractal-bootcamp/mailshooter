@@ -65,10 +65,9 @@ describe('mailing list tests', () => {
             deleted: delPersonIds,
             name: 'VIP People'
         }
-        const getBeforeRes = await request(app).get(`/dashboard/list/${id}`)
-        console.log(getBeforeRes.body)
+        await request(app).get(`/dashboard/list/${id}`)
 
-        const putRes = await request(app)
+        await request(app)
             .put(`/dashboard/list/${id}`)
             .send(updateData)
 
@@ -76,7 +75,6 @@ describe('mailing list tests', () => {
 
         const body = getRes.body
         const status = getRes.status
-        console.log(body)
 
         expect(status).toBe(200)
         expect(body.recipients[0].personId).toBe(updateData.added[0])
