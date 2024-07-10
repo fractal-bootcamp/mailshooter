@@ -6,7 +6,7 @@ import { seedTestDatabase } from "./seed";
 import app from "../server";
 import { z } from "zod";
 
-import { BlastSchema as BlastSchemaStrictCuid, MailingListSchema as MailingListSchemaStrictCuid, MessageSchema as MessageSchemaStrictCuid, type Blast, type MailingList } from "../prisma/generated/zod/index";
+import { BlastSchema as BlastSchemaStrictCuid, MailingListSchema as MailingListSchemaStrictCuid, MessageSchema as MessageSchemaStrictCuid, type Blast, type MailingList, type MailingListInBlast } from "../prisma/generated/zod/index";
 import { blastData, listData, messageData } from "./seedData";
 
 const MailingListSchema = MailingListSchemaStrictCuid.extend({
@@ -184,8 +184,16 @@ describe("email blast tests", () => {
         const MessagesArraySchema = z.array(MessageSchema);
         expect(MessagesArraySchema.safeParse(body.messagesSent).success).toBe(true);
 
+
+        const listsOfBlast = await Promise.all(body.lists.map(async (listRow: MailingListInBlast) => {
+            const listId = listRow.mailingListId
+            const realList = await request(app).get(`/dashboard/list/${listId}`);
+            return realList.body;
+        }))
+
         const listsArraySchema = z.array(MailingListSchema);
-        expect(listsArraySchema.safeParse(body.lists).success).toBe(true);
+        console.log("these are the lists", listsOfBlast);
+        expect(listsArraySchema.safeParse(listsOfBlast).success).toBe(true);
 
 
 
