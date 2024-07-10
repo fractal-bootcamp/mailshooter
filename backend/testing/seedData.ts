@@ -30,7 +30,9 @@ export const listData = {
         id: `001b`,
         name: "VIP Customers",
     },
+
 }
+
 
 export const blastData = {
     blast1: {
@@ -42,5 +44,24 @@ export const blastData = {
         id: "001b",
         name: "Special Promotion",
         authorId: listData.admin2.id,
+    },
+}
+
+export const messageData = {
+    message1: {
+        id: "001a",
+        content: "Welcome to our monthly newsletter!",
+        recipientId: listData.person1.id,
+        // blastId: blastData.blast1.id,
+        sentTime: new Date(),
+        delivered: true,
+    },
+    message2: {
+        id: `001b`,
+        content: "Special offer for our VIP customers!",
+        recipientId: listData.person2.id,
+        // blastId: blastData.blast2.id,
+        sentTime: new Date(),
+        delivered: false,
     },
 }

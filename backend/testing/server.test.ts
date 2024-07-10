@@ -134,9 +134,9 @@ describe.skip("email blast tests", () => {
         const body = res.body;
         const status = res.status;
         expect(status).toBe(200);
+        expect(BlastSchema.safeParse(body).success).toBe(true);
         expect(body.id).toBe(expectBlast.id);
         expect(body.name).toBe(expectBlast.name);
-
 
 
     })

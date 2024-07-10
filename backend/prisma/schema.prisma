@@ -69,10 +69,10 @@ model Message {
 }
 
 model Blast {
-  id                 String               @id @default(cuid())
-  name               String
-  messagesSent       Message[]
-  MailingListInBlast MailingListInBlast[]
+  id           String               @id @default(cuid())
+  name         String
+  messagesSent Message[]
+  lists        MailingListInBlast[]
 
   author   AdminUser @relation(fields: [authorId], references: [id])
   authorId String

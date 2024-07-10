@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client"; // TODO create a test database with docker
-import { blastData, listData } from "./seedData";
+import { blastData, listData, messageData } from "./seedData";
 
 console.log("DATABASE_URL:", process.env.DATABASE_URL); // Add this line for debugging
 
@@ -62,13 +62,29 @@ export async function seedTestDatabase() {
     ],
   });
 
+
   // Create Blasts
   const blast1 = await testPrisma.blast.create({
-    data: blastData.blast1
+    data: {
+      ...blastData.blast1,
+      messagesSent: {
+        create: messageData.message1
+      },
+
+
+
+    }
   });
 
   const blast2 = await testPrisma.blast.create({
-    data: blastData.blast2
+    data: {
+      ...blastData.blast2,
+      messagesSent: {
+        create: messageData.message2
+      },
+
+
+    }
   });
 
   // Create MailingListInBlast
@@ -79,25 +95,7 @@ export async function seedTestDatabase() {
     ],
   });
 
-  // Create Messages
-  await testPrisma.message.createMany({
-    data: [
-      {
-        content: "Welcome to our monthly newsletter!",
-        recipientId: person1.id,
-        blastId: blast1.id,
-        sentTime: new Date(),
-        delivered: true,
-      },
-      {
-        content: "Special offer for our VIP customers!",
-        recipientId: person2.id,
-        blastId: blast2.id,
-        sentTime: new Date(),
-        delivered: false,
-      },
-    ],
-  });
+
 
   console.log("Seed data created successfully!");
 }
