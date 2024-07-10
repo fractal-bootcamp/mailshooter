@@ -6,7 +6,7 @@ import { seedTestDatabase } from "./seed";
 import app from "../server";
 import { z } from "zod";
 
-import { BlastSchema, MailingListSchema as MailingListSchemaStrictCuid } from "../prisma/generated/zod/index";
+import { BlastSchema, MailingListSchema as MailingListSchemaStrictCuid, type Blast, type MailingList } from "../prisma/generated/zod/index";
 
 const MailingListSchema = MailingListSchemaStrictCuid.extend({
     id: z.string(),
@@ -45,7 +45,7 @@ describe("mailing list tests", () => {
 
         console.log(hey.error?.format())
 
-        body.forEach((mailingList: any) => {
+        body.forEach((mailingList: MailingList) => {
             expect(MailingListSchema.safeParse(mailingList).success).toBe(true);
         });
         expect(body.length).toBeGreaterThan(0);
