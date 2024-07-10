@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import listRouter from "./rest/controllers/list/controller";
 import bodyParser from "body-parser";
+import { blastRouter } from "./rest/controllers/blast/controller";
 
 const app = express();
 
@@ -14,5 +15,6 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/dashboard/list", listRouter);
+app.use("/dashboard/blast", blastRouter)
 
 export default app;

@@ -6,10 +6,13 @@ import { seedTestDatabase } from "./seed";
 import app from "../server";
 import { z } from "zod";
 
-import { BlastSchema, MailingListSchema as MailingListSchemaStrictCuid, MessageSchema, type Blast, type MailingList } from "../prisma/generated/zod/index";
+import { BlastSchema as BlastSchemaStrictCuid, MailingListSchema as MailingListSchemaStrictCuid, MessageSchema, type Blast, type MailingList } from "../prisma/generated/zod/index";
 import { blastData, listData, messageData } from "./seedData";
 
 const MailingListSchema = MailingListSchemaStrictCuid.extend({
+    id: z.string(),
+});
+const BlastSchema = BlastSchemaStrictCuid.extend({
     id: z.string(),
 });
 
@@ -39,12 +42,6 @@ describe("mailing list tests", () => {
         // expect body to have at least one element
         expect(status).toBe(200);
         expect(Array.isArray(body)).toBe(true);
-        console.log('body gang', body)
-        console.log('Trying to parse the first element of body:', MailingListSchema.safeParse(body[0]));
-
-        const hey = MailingListSchema.safeParse(body[0])
-
-        console.log(hey.error?.format())
 
         body.forEach((mailingList: MailingList) => {
             expect(MailingListSchema.safeParse(mailingList).success).toBe(true);
@@ -56,7 +53,6 @@ describe("mailing list tests", () => {
         const id = "001a";
         const res = await request(app).get(`/dashboard/list/${id}`);
         const body = res.body;
-        console.log("ayo bruh", process.env, body);
         const status = res.status;
 
         expect(status).toBe(200);
@@ -103,7 +99,7 @@ describe("mailing list tests", () => {
     // })
 });
 
-describe.skip("email blast tests", () => {
+describe("email blast tests", () => {
     it("should pull all email blasts", async () => {
 
         // hit endpoint /dashboard/blast/all
@@ -114,15 +110,21 @@ describe.skip("email blast tests", () => {
         const body = await res.body;
         const status = await res.status;
 
+        console.log('body gang', body)
+
+
         expect(status).toBe(200);
         body.forEach((blast: Blast) => {
+            console.log(blast)
+            const hey = BlastSchema.safeParse(blast)
+            console.log("ayo bruh", hey.error?.format())
             expect(BlastSchema.safeParse(blast).success).toBe(true);
         });
         expect(body.length).toBeGreaterThan(0);
 
     })
 
-    it("should pull an email blast by ID", async () => {
+    it.skip("should pull an email blast by ID", async () => {
         // hit endpoint /dashboard/blast/:id
         // expect status to be 200
         // hit with id = '001a'
@@ -142,7 +144,7 @@ describe.skip("email blast tests", () => {
 
     })
 
-    it("should create a new email blast", async () => {
+    it.skip("should create a new email blast", async () => {
         // should hit endpoint /dashboard/blast/create
         // it should create a new email blast 
         // should supply content  
@@ -164,7 +166,7 @@ describe.skip("email blast tests", () => {
         }
 
         const res = await request(app)
-            .post("/dashboard/blast/create")
+            .post("/dashboard/blast/send")
             .send(sendData);
 
         const body = res.body;
