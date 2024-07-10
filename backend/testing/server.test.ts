@@ -6,13 +6,16 @@ import { seedTestDatabase } from "./seed";
 import app from "../server";
 import { z } from "zod";
 
-import { BlastSchema as BlastSchemaStrictCuid, MailingListSchema as MailingListSchemaStrictCuid, MessageSchema, type Blast, type MailingList } from "../prisma/generated/zod/index";
+import { BlastSchema as BlastSchemaStrictCuid, MailingListSchema as MailingListSchemaStrictCuid, MessageSchema as MessageSchemaStrictCuid, type Blast, type MailingList } from "../prisma/generated/zod/index";
 import { blastData, listData, messageData } from "./seedData";
 
 const MailingListSchema = MailingListSchemaStrictCuid.extend({
     id: z.string(),
 });
 const BlastSchema = BlastSchemaStrictCuid.extend({
+    id: z.string(),
+});
+const MessageSchema = MessageSchemaStrictCuid.extend({
     id: z.string(),
 });
 
@@ -115,16 +118,13 @@ describe("email blast tests", () => {
 
         expect(status).toBe(200);
         body.forEach((blast: Blast) => {
-            console.log(blast)
-            const hey = BlastSchema.safeParse(blast)
-            console.log("ayo bruh", hey.error?.format())
             expect(BlastSchema.safeParse(blast).success).toBe(true);
         });
         expect(body.length).toBeGreaterThan(0);
 
     })
 
-    it.skip("should pull an email blast by ID", async () => {
+    it("should pull an email blast by ID", async () => {
         // hit endpoint /dashboard/blast/:id
         // expect status to be 200
         // hit with id = '001a'
@@ -139,8 +139,15 @@ describe("email blast tests", () => {
         expect(BlastSchema.safeParse(body).success).toBe(true);
         expect(body.id).toBe(expectBlast.id);
         expect(body.name).toBe(expectBlast.name);
-        expect(body.messagesSent).toBe([messageData.message1])
+
+        const MessagesArraySchema = z.array(MessageSchema);
+        console.log('messages are', body.messagesSent)
+
+        expect(MessagesArraySchema.safeParse(body.messagesSent).success).toBe(true);
         expect(body.authorId).toBe(expectBlast.authorId)
+        // expect it's not empty
+        expect(body.messagesSent.length).toBeGreaterThan(0);
+
 
     })
 
