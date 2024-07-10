@@ -70,9 +70,6 @@ export async function seedTestDatabase() {
       messagesSent: {
         create: messageData.message1
       },
-
-
-
     }
   });
 

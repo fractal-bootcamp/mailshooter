@@ -29,6 +29,8 @@ export const MailingListInBlastScalarFieldEnumSchema = z.enum(['id','mailingList
 export const SortOrderSchema = z.enum(['asc','desc']);
 
 export const QueryModeSchema = z.enum(['default','insensitive']);
+
+export const NullsOrderSchema = z.enum(['first','last']);
 /////////////////////////////////////////
 // MODELS
 /////////////////////////////////////////
@@ -99,7 +101,7 @@ export type Message = z.infer<typeof MessageSchema>
 export const BlastSchema = z.object({
   id: z.string().cuid(),
   name: z.string(),
-  authorId: z.string(),
+  authorId: z.string().nullable(),
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.date(),
 })
@@ -638,18 +640,18 @@ export const BlastWhereInputSchema: z.ZodType<Prisma.BlastWhereInput> = z.object
   NOT: z.union([ z.lazy(() => BlastWhereInputSchema),z.lazy(() => BlastWhereInputSchema).array() ]).optional(),
   id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
-  authorId: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  authorId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   messagesSent: z.lazy(() => MessageListRelationFilterSchema).optional(),
   lists: z.lazy(() => MailingListInBlastListRelationFilterSchema).optional(),
-  author: z.union([ z.lazy(() => AdminUserRelationFilterSchema),z.lazy(() => AdminUserWhereInputSchema) ]).optional(),
+  author: z.union([ z.lazy(() => AdminUserNullableRelationFilterSchema),z.lazy(() => AdminUserWhereInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const BlastOrderByWithRelationInputSchema: z.ZodType<Prisma.BlastOrderByWithRelationInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
-  authorId: z.lazy(() => SortOrderSchema).optional(),
+  authorId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional(),
   messagesSent: z.lazy(() => MessageOrderByRelationAggregateInputSchema).optional(),
@@ -666,18 +668,18 @@ export const BlastWhereUniqueInputSchema: z.ZodType<Prisma.BlastWhereUniqueInput
   OR: z.lazy(() => BlastWhereInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => BlastWhereInputSchema),z.lazy(() => BlastWhereInputSchema).array() ]).optional(),
   name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
-  authorId: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  authorId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   messagesSent: z.lazy(() => MessageListRelationFilterSchema).optional(),
   lists: z.lazy(() => MailingListInBlastListRelationFilterSchema).optional(),
-  author: z.union([ z.lazy(() => AdminUserRelationFilterSchema),z.lazy(() => AdminUserWhereInputSchema) ]).optional(),
+  author: z.union([ z.lazy(() => AdminUserNullableRelationFilterSchema),z.lazy(() => AdminUserWhereInputSchema) ]).optional().nullable(),
 }).strict());
 
 export const BlastOrderByWithAggregationInputSchema: z.ZodType<Prisma.BlastOrderByWithAggregationInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
-  authorId: z.lazy(() => SortOrderSchema).optional(),
+  authorId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional(),
   _count: z.lazy(() => BlastCountOrderByAggregateInputSchema).optional(),
@@ -691,7 +693,7 @@ export const BlastScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.BlastSc
   NOT: z.union([ z.lazy(() => BlastScalarWhereWithAggregatesInputSchema),z.lazy(() => BlastScalarWhereWithAggregatesInputSchema).array() ]).optional(),
   id: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   name: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
-  authorId: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  authorId: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
   createdAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
 }).strict();
@@ -1088,13 +1090,13 @@ export const BlastCreateInputSchema: z.ZodType<Prisma.BlastCreateInput> = z.obje
   updatedAt: z.coerce.date().optional(),
   messagesSent: z.lazy(() => MessageCreateNestedManyWithoutBlastInputSchema).optional(),
   lists: z.lazy(() => MailingListInBlastCreateNestedManyWithoutBlastInputSchema).optional(),
-  author: z.lazy(() => AdminUserCreateNestedOneWithoutBlastsInputSchema)
+  author: z.lazy(() => AdminUserCreateNestedOneWithoutBlastsInputSchema).optional()
 }).strict();
 
 export const BlastUncheckedCreateInputSchema: z.ZodType<Prisma.BlastUncheckedCreateInput> = z.object({
   id: z.string().cuid().optional(),
   name: z.string(),
-  authorId: z.string(),
+  authorId: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   messagesSent: z.lazy(() => MessageUncheckedCreateNestedManyWithoutBlastInputSchema).optional(),
@@ -1108,13 +1110,13 @@ export const BlastUpdateInputSchema: z.ZodType<Prisma.BlastUpdateInput> = z.obje
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   messagesSent: z.lazy(() => MessageUpdateManyWithoutBlastNestedInputSchema).optional(),
   lists: z.lazy(() => MailingListInBlastUpdateManyWithoutBlastNestedInputSchema).optional(),
-  author: z.lazy(() => AdminUserUpdateOneRequiredWithoutBlastsNestedInputSchema).optional()
+  author: z.lazy(() => AdminUserUpdateOneWithoutBlastsNestedInputSchema).optional()
 }).strict();
 
 export const BlastUncheckedUpdateInputSchema: z.ZodType<Prisma.BlastUncheckedUpdateInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  authorId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  authorId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   messagesSent: z.lazy(() => MessageUncheckedUpdateManyWithoutBlastNestedInputSchema).optional(),
@@ -1124,7 +1126,7 @@ export const BlastUncheckedUpdateInputSchema: z.ZodType<Prisma.BlastUncheckedUpd
 export const BlastCreateManyInputSchema: z.ZodType<Prisma.BlastCreateManyInput> = z.object({
   id: z.string().cuid().optional(),
   name: z.string(),
-  authorId: z.string(),
+  authorId: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional()
 }).strict();
@@ -1139,7 +1141,7 @@ export const BlastUpdateManyMutationInputSchema: z.ZodType<Prisma.BlastUpdateMan
 export const BlastUncheckedUpdateManyInputSchema: z.ZodType<Prisma.BlastUncheckedUpdateManyInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  authorId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  authorId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
@@ -1450,9 +1452,29 @@ export const BoolWithAggregatesFilterSchema: z.ZodType<Prisma.BoolWithAggregates
   _max: z.lazy(() => NestedBoolFilterSchema).optional()
 }).strict();
 
-export const AdminUserRelationFilterSchema: z.ZodType<Prisma.AdminUserRelationFilter> = z.object({
-  is: z.lazy(() => AdminUserWhereInputSchema).optional(),
-  isNot: z.lazy(() => AdminUserWhereInputSchema).optional()
+export const StringNullableFilterSchema: z.ZodType<Prisma.StringNullableFilter> = z.object({
+  equals: z.string().optional().nullable(),
+  in: z.string().array().optional().nullable(),
+  notIn: z.string().array().optional().nullable(),
+  lt: z.string().optional(),
+  lte: z.string().optional(),
+  gt: z.string().optional(),
+  gte: z.string().optional(),
+  contains: z.string().optional(),
+  startsWith: z.string().optional(),
+  endsWith: z.string().optional(),
+  mode: z.lazy(() => QueryModeSchema).optional(),
+  not: z.union([ z.string(),z.lazy(() => NestedStringNullableFilterSchema) ]).optional().nullable(),
+}).strict();
+
+export const AdminUserNullableRelationFilterSchema: z.ZodType<Prisma.AdminUserNullableRelationFilter> = z.object({
+  is: z.lazy(() => AdminUserWhereInputSchema).optional().nullable(),
+  isNot: z.lazy(() => AdminUserWhereInputSchema).optional().nullable()
+}).strict();
+
+export const SortOrderInputSchema: z.ZodType<Prisma.SortOrderInput> = z.object({
+  sort: z.lazy(() => SortOrderSchema),
+  nulls: z.lazy(() => NullsOrderSchema).optional()
 }).strict();
 
 export const BlastCountOrderByAggregateInputSchema: z.ZodType<Prisma.BlastCountOrderByAggregateInput> = z.object({
@@ -1477,6 +1499,24 @@ export const BlastMinOrderByAggregateInputSchema: z.ZodType<Prisma.BlastMinOrder
   authorId: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional()
+}).strict();
+
+export const StringNullableWithAggregatesFilterSchema: z.ZodType<Prisma.StringNullableWithAggregatesFilter> = z.object({
+  equals: z.string().optional().nullable(),
+  in: z.string().array().optional().nullable(),
+  notIn: z.string().array().optional().nullable(),
+  lt: z.string().optional(),
+  lte: z.string().optional(),
+  gt: z.string().optional(),
+  gte: z.string().optional(),
+  contains: z.string().optional(),
+  startsWith: z.string().optional(),
+  endsWith: z.string().optional(),
+  mode: z.lazy(() => QueryModeSchema).optional(),
+  not: z.union([ z.string(),z.lazy(() => NestedStringNullableWithAggregatesFilterSchema) ]).optional().nullable(),
+  _count: z.lazy(() => NestedIntNullableFilterSchema).optional(),
+  _min: z.lazy(() => NestedStringNullableFilterSchema).optional(),
+  _max: z.lazy(() => NestedStringNullableFilterSchema).optional()
 }).strict();
 
 export const MailingListRelationFilterSchema: z.ZodType<Prisma.MailingListRelationFilter> = z.object({
@@ -1842,12 +1882,18 @@ export const MailingListInBlastUpdateManyWithoutBlastNestedInputSchema: z.ZodTyp
   deleteMany: z.union([ z.lazy(() => MailingListInBlastScalarWhereInputSchema),z.lazy(() => MailingListInBlastScalarWhereInputSchema).array() ]).optional(),
 }).strict();
 
-export const AdminUserUpdateOneRequiredWithoutBlastsNestedInputSchema: z.ZodType<Prisma.AdminUserUpdateOneRequiredWithoutBlastsNestedInput> = z.object({
+export const AdminUserUpdateOneWithoutBlastsNestedInputSchema: z.ZodType<Prisma.AdminUserUpdateOneWithoutBlastsNestedInput> = z.object({
   create: z.union([ z.lazy(() => AdminUserCreateWithoutBlastsInputSchema),z.lazy(() => AdminUserUncheckedCreateWithoutBlastsInputSchema) ]).optional(),
   connectOrCreate: z.lazy(() => AdminUserCreateOrConnectWithoutBlastsInputSchema).optional(),
   upsert: z.lazy(() => AdminUserUpsertWithoutBlastsInputSchema).optional(),
+  disconnect: z.union([ z.boolean(),z.lazy(() => AdminUserWhereInputSchema) ]).optional(),
+  delete: z.union([ z.boolean(),z.lazy(() => AdminUserWhereInputSchema) ]).optional(),
   connect: z.lazy(() => AdminUserWhereUniqueInputSchema).optional(),
   update: z.union([ z.lazy(() => AdminUserUpdateToOneWithWhereWithoutBlastsInputSchema),z.lazy(() => AdminUserUpdateWithoutBlastsInputSchema),z.lazy(() => AdminUserUncheckedUpdateWithoutBlastsInputSchema) ]).optional(),
+}).strict();
+
+export const NullableStringFieldUpdateOperationsInputSchema: z.ZodType<Prisma.NullableStringFieldUpdateOperationsInput> = z.object({
+  set: z.string().optional().nullable()
 }).strict();
 
 export const MessageUncheckedUpdateManyWithoutBlastNestedInputSchema: z.ZodType<Prisma.MessageUncheckedUpdateManyWithoutBlastNestedInput> = z.object({
@@ -2014,6 +2060,48 @@ export const NestedBoolWithAggregatesFilterSchema: z.ZodType<Prisma.NestedBoolWi
   _max: z.lazy(() => NestedBoolFilterSchema).optional()
 }).strict();
 
+export const NestedStringNullableFilterSchema: z.ZodType<Prisma.NestedStringNullableFilter> = z.object({
+  equals: z.string().optional().nullable(),
+  in: z.string().array().optional().nullable(),
+  notIn: z.string().array().optional().nullable(),
+  lt: z.string().optional(),
+  lte: z.string().optional(),
+  gt: z.string().optional(),
+  gte: z.string().optional(),
+  contains: z.string().optional(),
+  startsWith: z.string().optional(),
+  endsWith: z.string().optional(),
+  not: z.union([ z.string(),z.lazy(() => NestedStringNullableFilterSchema) ]).optional().nullable(),
+}).strict();
+
+export const NestedStringNullableWithAggregatesFilterSchema: z.ZodType<Prisma.NestedStringNullableWithAggregatesFilter> = z.object({
+  equals: z.string().optional().nullable(),
+  in: z.string().array().optional().nullable(),
+  notIn: z.string().array().optional().nullable(),
+  lt: z.string().optional(),
+  lte: z.string().optional(),
+  gt: z.string().optional(),
+  gte: z.string().optional(),
+  contains: z.string().optional(),
+  startsWith: z.string().optional(),
+  endsWith: z.string().optional(),
+  not: z.union([ z.string(),z.lazy(() => NestedStringNullableWithAggregatesFilterSchema) ]).optional().nullable(),
+  _count: z.lazy(() => NestedIntNullableFilterSchema).optional(),
+  _min: z.lazy(() => NestedStringNullableFilterSchema).optional(),
+  _max: z.lazy(() => NestedStringNullableFilterSchema).optional()
+}).strict();
+
+export const NestedIntNullableFilterSchema: z.ZodType<Prisma.NestedIntNullableFilter> = z.object({
+  equals: z.number().optional().nullable(),
+  in: z.number().array().optional().nullable(),
+  notIn: z.number().array().optional().nullable(),
+  lt: z.number().optional(),
+  lte: z.number().optional(),
+  gt: z.number().optional(),
+  gte: z.number().optional(),
+  not: z.union([ z.number(),z.lazy(() => NestedIntNullableFilterSchema) ]).optional().nullable(),
+}).strict();
+
 export const BlastCreateWithoutAuthorInputSchema: z.ZodType<Prisma.BlastCreateWithoutAuthorInput> = z.object({
   id: z.string().cuid().optional(),
   name: z.string(),
@@ -2064,7 +2152,7 @@ export const BlastScalarWhereInputSchema: z.ZodType<Prisma.BlastScalarWhereInput
   NOT: z.union([ z.lazy(() => BlastScalarWhereInputSchema),z.lazy(() => BlastScalarWhereInputSchema).array() ]).optional(),
   id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
-  authorId: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  authorId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
 }).strict();
@@ -2284,13 +2372,13 @@ export const BlastCreateWithoutMessagesSentInputSchema: z.ZodType<Prisma.BlastCr
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   lists: z.lazy(() => MailingListInBlastCreateNestedManyWithoutBlastInputSchema).optional(),
-  author: z.lazy(() => AdminUserCreateNestedOneWithoutBlastsInputSchema)
+  author: z.lazy(() => AdminUserCreateNestedOneWithoutBlastsInputSchema).optional()
 }).strict();
 
 export const BlastUncheckedCreateWithoutMessagesSentInputSchema: z.ZodType<Prisma.BlastUncheckedCreateWithoutMessagesSentInput> = z.object({
   id: z.string().cuid().optional(),
   name: z.string(),
-  authorId: z.string(),
+  authorId: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   lists: z.lazy(() => MailingListInBlastUncheckedCreateNestedManyWithoutBlastInputSchema).optional()
@@ -2347,13 +2435,13 @@ export const BlastUpdateWithoutMessagesSentInputSchema: z.ZodType<Prisma.BlastUp
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   lists: z.lazy(() => MailingListInBlastUpdateManyWithoutBlastNestedInputSchema).optional(),
-  author: z.lazy(() => AdminUserUpdateOneRequiredWithoutBlastsNestedInputSchema).optional()
+  author: z.lazy(() => AdminUserUpdateOneWithoutBlastsNestedInputSchema).optional()
 }).strict();
 
 export const BlastUncheckedUpdateWithoutMessagesSentInputSchema: z.ZodType<Prisma.BlastUncheckedUpdateWithoutMessagesSentInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  authorId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  authorId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   lists: z.lazy(() => MailingListInBlastUncheckedUpdateManyWithoutBlastNestedInputSchema).optional()
@@ -2620,13 +2708,13 @@ export const BlastCreateWithoutListsInputSchema: z.ZodType<Prisma.BlastCreateWit
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   messagesSent: z.lazy(() => MessageCreateNestedManyWithoutBlastInputSchema).optional(),
-  author: z.lazy(() => AdminUserCreateNestedOneWithoutBlastsInputSchema)
+  author: z.lazy(() => AdminUserCreateNestedOneWithoutBlastsInputSchema).optional()
 }).strict();
 
 export const BlastUncheckedCreateWithoutListsInputSchema: z.ZodType<Prisma.BlastUncheckedCreateWithoutListsInput> = z.object({
   id: z.string().cuid().optional(),
   name: z.string(),
-  authorId: z.string(),
+  authorId: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   messagesSent: z.lazy(() => MessageUncheckedCreateNestedManyWithoutBlastInputSchema).optional()
@@ -2681,13 +2769,13 @@ export const BlastUpdateWithoutListsInputSchema: z.ZodType<Prisma.BlastUpdateWit
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   messagesSent: z.lazy(() => MessageUpdateManyWithoutBlastNestedInputSchema).optional(),
-  author: z.lazy(() => AdminUserUpdateOneRequiredWithoutBlastsNestedInputSchema).optional()
+  author: z.lazy(() => AdminUserUpdateOneWithoutBlastsNestedInputSchema).optional()
 }).strict();
 
 export const BlastUncheckedUpdateWithoutListsInputSchema: z.ZodType<Prisma.BlastUncheckedUpdateWithoutListsInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  authorId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  authorId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   messagesSent: z.lazy(() => MessageUncheckedUpdateManyWithoutBlastNestedInputSchema).optional()

@@ -41,17 +41,11 @@ listRouter.put("/:id", async (req, res) => {
     });
 
     if (added && added.length > 0) {
-        const createData: {
-            personId: string;
-            mailingListId: string;
-        }[] = [];
+        const createData = added.map((personId: string) => ({
+            personId: personId,
+            mailingListId: req.params.id
+        }));
 
-        added.forEach((personId: string) => {
-            createData.push({
-                personId: personId,
-                mailingListId: req.params.id,
-            });
-        });
 
         await prisma.personsInMailingLists.createMany({
             data: createData,

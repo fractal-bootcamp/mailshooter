@@ -148,10 +148,9 @@ describe("email blast tests", () => {
         // expect it's not empty
         expect(body.messagesSent.length).toBeGreaterThan(0);
 
-
     })
 
-    it.skip("should create a new email blast", async () => {
+    it("should create a new email blast", async () => {
         // should hit endpoint /dashboard/blast/create
         // it should create a new email blast 
         // should supply content  

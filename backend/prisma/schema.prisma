@@ -74,8 +74,9 @@ model Blast {
   messagesSent Message[]
   lists        MailingListInBlast[]
 
-  author   AdminUser @relation(fields: [authorId], references: [id])
-  authorId String
+  // TODO - make author Id required after implementing auth middleware
+  author   AdminUser? @relation(fields: [authorId], references: [id])
+  authorId String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
