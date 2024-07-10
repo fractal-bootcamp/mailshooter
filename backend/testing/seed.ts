@@ -4,6 +4,51 @@ console.log("DATABASE_URL:", process.env.DATABASE_URL); // Add this line for deb
 
 const testPrisma = new PrismaClient();
 
+export const seedData = {
+  admin1: {
+    id: "001a",
+    email: "admin1@example.com",
+    name: "Admin One",
+    clerkId: "clerk_345",
+  },
+  admin2: {
+    id: `001b`,
+    email: "admin2@example.com",
+    name: "Admin Two",
+    clerkId: "clerk_123",
+  },
+  person1: {
+    id: "001a",
+    name: "John Doe",
+    email: "john@example.com",
+  },
+  person2: {
+    id: `001b`,
+    name: "Jane Smith",
+    email: "jane@example.com",
+  },
+  mailingList1: {
+    id: "001a",
+    name: "Newsletter Subscribers",
+  },
+  mailingList2: {
+    id: `001b`,
+    name: "VIP Customers",
+  },
+}
+
+export const blastData = {
+  blast1: {
+    name: "Monthly Newsletter",
+    authorId: seedData.admin1.id,
+  },
+  blast2: {
+    name: "Special Promotion",
+    authorId: seedData.admin2.id,
+  },
+}
+
+
 export async function seedTestDatabase() {
   // Delete from tables with foreign key dependencies first
   await testPrisma.message.deleteMany({});
@@ -16,56 +61,37 @@ export async function seedTestDatabase() {
   await testPrisma.adminUser.deleteMany({});
   await testPrisma.person.deleteMany({});
 
+
+
+
+
   // Create AdminUsers
   const admin1 = await testPrisma.adminUser.create({
-    data: {
-      id: "001a",
-      email: "admin1@example.com",
-      name: "Admin One",
-      clerkId: "clerk_345",
-    },
+    data: seedData.admin1
   });
 
   const admin2 = await testPrisma.adminUser.create({
-    data: {
-      id: `001b`,
-      email: "admin2@example.com",
-      name: "Admin Two",
-      clerkId: "clerk_123",
-    },
+    data: seedData.admin2
   });
 
   // Create Persons
   const person1 = await testPrisma.person.create({
-    data: {
-      id: "001a",
-      name: "John Doe",
-      email: "john@example.com",
-    },
+    data: seedData.person1
   });
 
   const person2 = await testPrisma.person.create({
-    data: {
-      id: `001b`,
-      name: "Jane Smith",
-      email: "jane@example.com",
-    },
+    data: seedData.person2
   });
 
   // Create MailingLists
   const mailingList1 = await testPrisma.mailingList.create({
-    data: {
-      id: "001a",
-      name: "Newsletter Subscribers",
-    },
+    data: seedData.mailingList1
   });
 
   const mailingList2 = await testPrisma.mailingList.create({
-    data: {
-      id: `001b`,
-      name: "VIP Customers",
-    },
+    data: seedData.mailingList2
   });
+
 
   // Create PersonsInMailingLists
   await testPrisma.personsInMailingLists.createMany({
@@ -78,17 +104,11 @@ export async function seedTestDatabase() {
 
   // Create Blasts
   const blast1 = await testPrisma.blast.create({
-    data: {
-      name: "Monthly Newsletter",
-      authorId: admin1.id,
-    },
+    data: blastData.blast1
   });
 
   const blast2 = await testPrisma.blast.create({
-    data: {
-      name: "Special Promotion",
-      authorId: admin2.id,
-    },
+    data: blastData.blast2
   });
 
   // Create MailingListInBlast
