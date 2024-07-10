@@ -29,7 +29,7 @@ beforeEach(async () => {
 
 // TODO: create a test database
 
-describe("mailing list tests", () => {
+describe("mailing list database tests", () => {
     it("should ping the server and get a hello world", async () => {
         const res = await request(app).get("/");
         expect(res.text).toBe("Hello World!");
@@ -102,7 +102,7 @@ describe("mailing list tests", () => {
     // })
 });
 
-describe("email blast tests", () => {
+describe("email blast database tests", () => {
     it("should pull all email blasts", async () => {
 
         // hit endpoint /dashboard/blast/all
