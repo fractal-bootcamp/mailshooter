@@ -1,7 +1,8 @@
 import { expect, test, describe, it } from "vitest";
 import request from "supertest";
-import type { MailingList } from "@prisma/client";
-import { stringSchema, mailingListSchema } from "../rest/controllers/list/types";
+
+import { BlastSchema, MailingListSchema } from "../prisma/generated/zod/index";
+
 import { beforeEach } from "vitest";
 import { seedTestDatabase } from "./seed";
 import app from "../server";
@@ -20,7 +21,6 @@ describe("mailing list tests", () => {
     it("should ping the server and get a hello world", async () => {
         const res = await request(app).get("/");
         expect(res.text).toBe("Hello World!");
-        expect(() => stringSchema.safeParse(res.body).success);
     });
 
     it("should get a list of all mailing lists", async () => {
@@ -32,7 +32,7 @@ describe("mailing list tests", () => {
         // expect body to be an array of MailingList objects
         // expect body to have at least one element
         expect(status).toBe(200);
-        expect(() => mailingListSchema.safeParse(body[0]).success);
+        expect(() => MailingListSchema.safeParse(body[0]).success);
         expect(body.length).toBeGreaterThan(0);
     });
 
@@ -44,7 +44,7 @@ describe("mailing list tests", () => {
         const status = res.status;
 
         expect(status).toBe(200);
-        expect(() => mailingListSchema.safeParse(body).success); // does a zod check
+        expect(() => MailingListSchema.safeParse(body).success); // does a zod check
         expect(body.id).toBe(id);
     });
 
@@ -99,7 +99,7 @@ describe("email blast tests", () => {
         const status = await res.status;
 
         expect(status).toBe(200);
-        expect(() => emailBlastSchema.safeParse(body[0]).success);
+        expect(() => BlastSchema.safeParse(body[0]).success);
 
 
 
