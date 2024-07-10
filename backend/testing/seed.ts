@@ -1,6 +1,4 @@
 import { PrismaClient } from '@prisma/client' // TODO create a test database with docker
-import { config } from "dotenv"
-config({ path: '.' })
 
 console.log('DATABASE_URL:', process.env.DATABASE_URL); // Add this line for debugging
 
