@@ -79,8 +79,8 @@ describe('mailing list tests', () => {
         console.log(body)
 
         expect(status).toBe(200)
-        expect(body.recipients[0].personId).toBe('001b')
-        expect(body.name).toBe('VIP Customers')
+        expect(body.recipients[0].personId).toBe(updateData.added[0])
+        expect(body.name).toBe(updateData.name)
 
     })
 

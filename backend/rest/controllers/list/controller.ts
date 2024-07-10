@@ -62,26 +62,27 @@ listRouter.put('/:id', async (req, res) => {
 
     }
 
-    // if (deleted && deleted.length > 0) {
-    //     const deleteObject: createOrDeleteParams = []
-    //     deleted.forEach((personId: string) => {
-    //         deleteObject.push({
-    //             personId: personId,
-    //             mailingListId: req.params.id
-    //         })
+    if (deleted && deleted.length > 0) {
+        // const deleteObject: createOrDeleteParams = []
+        // deleted.forEach((personId: string) => {
+        //     deleteObject.push({
+        //         personId: personId,
+        //         mailingListId: req.params.id
+        //     })
 
-    //     });
+        // });
 
-    //     console.log('Delete object: ', deleteObject)
+        // console.log('Delete object: ', deleteObject)
 
-    //     await prisma.personsInMailingLists.deleteMany({
-    //         where: {
-    //             personId: deleted
-    //             // personId: deleted.map((personId: string) => { return personId })
-    //         }
-    //     })
+        await prisma.personsInMailingLists.deleteMany({
+            where: {
+                personId: {
+                    in: deleted
+                }
+            }
+        })
 
-    // }
+    }
 
     // // Add persons to the mailing list
     // if (added && added.length > 0) {
