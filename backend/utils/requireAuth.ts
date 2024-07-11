@@ -62,9 +62,4 @@ export const requireAuth = async (
         console.error('Error verifying JWT:', error);
         res.status(401).json({ message: "Unauthorized bro" });
     }
-
-
-
-
-
 };
