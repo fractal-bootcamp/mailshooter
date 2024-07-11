@@ -1,4 +1,4 @@
-import { useState, createContext, useContext } from "react";
+import { useState, createContext, useContext, useCallback } from "react";
 
 const UserContext = createContext({ state: {}, actions: {} });
 
@@ -9,6 +9,16 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
         state: { user },
         actions: { setUser }
     };
+
+    // // fetch and hit /auth/login
+
+    // const fetchUser = useCallback(async () => {
+    //     const response = await fetch("/auth/login");
+    //     const data = await response.json();
+    //     setUser(data);
+    // }, []);
+
+
 
 
     return (

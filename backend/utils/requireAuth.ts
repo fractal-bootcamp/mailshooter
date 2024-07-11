@@ -3,11 +3,11 @@ import { clerkClient } from '@clerk/clerk-sdk-node';
 import prisma from "../prisma/client";
 import type { AdminUser } from "@prisma/client";
 
-interface AuthenticatedRequest extends Request {
+export interface AuthenticatedRequest extends Request {
     user?: AdminUser;
 }
 
-interface AuthenticatedResponse extends Response {
+export interface AuthenticatedResponse extends Response {
     user?: AdminUser;
 }
 
