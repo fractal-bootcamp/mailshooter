@@ -1,10 +1,19 @@
-import express, { type NextFunction } from "express";
+import express, { type NextFunction, type Request, type Response } from "express";
 import { clerkClient } from '@clerk/clerk-sdk-node';
 import prisma from "../prisma/client";
+import type { AdminUser } from "@prisma/client";
+
+interface AuthenticatedRequest extends Request {
+    user?: AdminUser;
+}
+
+interface AuthenticatedResponse extends Response {
+    user?: AdminUser;
+}
 
 export const requireAuth = async (
-    req: express.Request,
-    res: express.Response,
+    req: AuthenticatedRequest,
+    res: AuthenticatedResponse,
     next: NextFunction
 ) => {
     const authToken = req.headers.authorization?.split(" ")[1];
@@ -23,6 +32,7 @@ export const requireAuth = async (
             where: {
                 clerkId: verifiedToken.sub
             }
+
         })
         if (!dbUser) {
             const clerkUser = await clerkClient.users.getUser(verifiedToken.sub);
@@ -38,8 +48,12 @@ export const requireAuth = async (
             })
 
             console.log('newAdminUser', newUser);
+            req["user"] = newUser;
+            return next();
 
         }
+
+        req["user"] = dbUser;
 
         next();
 
@@ -52,6 +66,5 @@ export const requireAuth = async (
 
 
 
-    next();
 
 };
