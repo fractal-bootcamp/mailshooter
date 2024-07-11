@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "main": "index.ts",
   "scripts": {
-    "migrate:test": "dotenv -e .env.test npx -- prisma migrate dev",
-    "migrate:dev": "dotenv -e .env.dev npx -- prisma migrate dev",
-    "start": "npm run migrate:dev && dotenv -e .env.dev npx -- bun start.ts",
-    "test": "npm run migrate:test && npx prisma generate && dotenv -e .env.test vitest"
+    "migrate:test": "dotenv -e .env.test -- npx prisma migrate dev && npx prisma generate",
+    "migrate:dev": "dotenv -e .env.dev -- npx prisma migrate dev && npx prisma generate",
+    "start": "npm run migrate:dev && dotenv -e .env.dev npx -- bun --watch start.ts",
+    "test": "npm run migrate:test && dotenv -e .env.test vitest"
   },
   "keywords": [],
   "author": "",
@@ -23,6 +23,7 @@
     "vitest": "^2.0.1"
   },
   "dependencies": {
+    "@clerk/clerk-sdk-node": "^5.0.14",
     "@prisma/client": "5.16.1",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",

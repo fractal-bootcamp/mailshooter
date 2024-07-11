@@ -105,6 +105,8 @@ describe("mailing list database tests", () => {
 describe("email blast database tests", () => {
     it("should pull all email blasts", async () => {
 
+
+
         // hit endpoint /dashboard/blast/all
         // expect status to be 200
         // expect body to be an array of EmailBlast objects
