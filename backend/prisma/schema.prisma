@@ -8,6 +8,11 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator zod {
+  provider       = "zod-prisma-types"
+  addIncludeType = true
+}
+
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
@@ -30,7 +35,7 @@ model Person {
   name  String
   email String @unique
 
-  PersonsInMailingLists PersonsInMailingLists[]
+  mailingLists PersonsInMailingLists[]
 
   receivedMessages Message[]
 
@@ -39,10 +44,10 @@ model Person {
 }
 
 model MailingList {
-  id                    String                  @id @default(cuid())
-  name                  String
-  PersonsInMailingLists PersonsInMailingLists[]
-  MailingListInBlast    MailingListInBlast[]
+  id         String                  @id @default(cuid())
+  name       String
+  recipients PersonsInMailingLists[]
+  blasts     MailingListInBlast[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -64,13 +69,14 @@ model Message {
 }
 
 model Blast {
-  id                 String               @id @default(cuid())
-  name               String
-  messagesSent       Message[]
-  MailingListInBlast MailingListInBlast[]
+  id           String               @id @default(cuid())
+  name         String
+  messagesSent Message[]
+  lists        MailingListInBlast[]
 
-  author   AdminUser @relation(fields: [authorId], references: [id])
-  authorId String
+  // TODO - make author Id required after implementing auth middleware
+  author   AdminUser? @relation(fields: [authorId], references: [id])
+  authorId String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
