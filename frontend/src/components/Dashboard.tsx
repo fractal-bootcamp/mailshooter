@@ -1,9 +1,12 @@
 import { ClerkProvider, SignOutButton, useAuth } from "@clerk/clerk-react";
 import { useCallback, useState } from "react";
+import { useUser } from "../context/userContext";
 
 export const Dashboard = () => {
   const clerkAuth = useAuth();
-  const [user, setUser] = useState(null); // remove this later when we have a user context
+  // const [user, setUser] = useState(null); // remove this later when we have a user context
+
+  const user = useUser();
 
 
   const handleClick = async () => {
@@ -20,24 +23,25 @@ export const Dashboard = () => {
     }
   };
 
-  const handleOtherClick = async () => {
-    const token = await clerkAuth.getToken();
+  // const handleOtherClick = async () => {
+  //   const token = await clerkAuth.getToken();
 
-    const response = await fetch("http://localhost:3000/auth/login", {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-    const data = await response.json();
-    setUser(data);
-    console.log(data)
+  //   const response = await fetch("http://localhost:3000/auth/login", {
+  //     headers: {
+  //       Authorization: `Bearer ${token}`
+  //     }
+  //   });
+  //   const data = await response.json();
+  //   setUser(data);
+  //   console.log(data)
 
-  }
+  // }
   return (
     <div>
       <h1>Dashboard</h1>
       <button onClick={handleClick}>GET AUTH</button>
-      <button onClick={handleOtherClick}>GET USER</button>
+      <h1>User: {user?.name} </h1>
+      {/* <button onClick={handleOtherClick}>GET USER</button> */}
 
       <SignOutButton />
     </div>

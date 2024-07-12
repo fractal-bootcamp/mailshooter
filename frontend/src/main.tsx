@@ -8,6 +8,7 @@ import { ProtectedLayout } from "./layouts/ProtectedLayout.tsx";
 import { ComposeBlast } from "./components/ComposeBlast.tsx";
 import { EditLists } from "./components/EditLists.tsx";
 import { Layout } from "./layouts/Layout.tsx";
+import { UserProvider } from "./context/userContext.tsx";
 
 const router = createBrowserRouter([
   {
@@ -35,7 +36,9 @@ if (!PUBLISHABLE_KEY) {
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
-      <RouterProvider router={router} />
+      <UserProvider>
+        <RouterProvider router={router} />
+      </UserProvider>
     </ClerkProvider>
   </React.StrictMode>,
 );
