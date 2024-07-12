@@ -14,7 +14,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
-    children: [{ path: "", element: <SignIn /> }],
+    children: [{ path: "", element: <SignIn forceRedirectUrl={import.meta.env.SERVER_URL + "/auth/login"} /> }],
   },
   {
     path: "/dashboard",

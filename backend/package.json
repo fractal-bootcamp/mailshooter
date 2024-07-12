@@ -6,6 +6,7 @@
     "migrate:test": "dotenv -e .env.test -- npx prisma migrate dev && npx prisma generate",
     "migrate:dev": "dotenv -e .env.dev -- npx prisma migrate dev && npx prisma generate",
     "start": "npm run migrate:dev && dotenv -e .env.dev npx -- bun --watch start.ts",
+    "start:debug": "npm run migrate:dev && dotenv -e .env.dev npx -- bun --watch --inspect start.ts",
     "test": "npm run migrate:test && dotenv -e .env.test vitest"
   },
   "keywords": [],

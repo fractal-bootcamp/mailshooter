@@ -28,6 +28,8 @@ export const requireAuth = async (
         const verifiedToken = await clerkClient.verifyToken(authToken, { jwtKey: process.env.CLERK_JWT_KEY });
         console.log('verifiedToken', verifiedToken);
 
+        debugger;
+
         const dbUser = await prisma.adminUser.findUnique({
             where: {
                 clerkId: verifiedToken.sub

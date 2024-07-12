@@ -15,6 +15,4 @@ authRouter.get("/login", (req: AuthenticatedRequest, res) => {
     else {
         res.status(401).json({ message: "No user found" });
     }
-
-
 })
